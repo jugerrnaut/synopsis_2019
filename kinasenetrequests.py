@@ -1,6 +1,8 @@
 import requests
 import selenium
 from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+import pyautogui
 import time
 from bs4 import BeautifulSoup as bs
 import pandas as pd
@@ -16,10 +18,15 @@ df = pd.DataFrame(kinase_list,columns = label)
 
 path_to_driver = "/Users/athreya/Downloads/chromedriver"
 driver = webdriver.Chrome(path_to_driver)
+actions = ActionChains(driver)
 
 url = "http://www.kinasenet.ca/showProtein"
-query = "AurA"
+#411 379 are the x and y of the first query
+query = "a"
 driver.get(url)
 sbox = driver.find_element_by_name("query")
 sbox.send_keys(query)
+pyautogui.moveTo(411, 389)
+time.sleep(1.5)
+pyautogui.click()
 submit_button = driver.find_element_by_id("search").click()
