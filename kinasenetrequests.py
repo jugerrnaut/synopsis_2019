@@ -22,11 +22,15 @@ actions = ActionChains(driver)
 
 url = "http://www.kinasenet.ca/showProtein"
 #411 379 are the x and y of the first query
+#389,400 are the xy of the second one
+#according to my calculations - each box is 22
 query = "a"
+xpos = 411
+ypos = 440
 driver.get(url)
 sbox = driver.find_element_by_name("query")
 sbox.send_keys(query)
-pyautogui.moveTo(411, 389)
+pyautogui.moveTo(xpos, ypos)
 time.sleep(1.5)
 pyautogui.click()
 submit_button = driver.find_element_by_id("search").click()
