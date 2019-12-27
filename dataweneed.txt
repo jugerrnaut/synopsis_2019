@@ -1,0 +1,7 @@
+1. rmsd - root mean squared deviation (use as a comparitive value)
+2. basic atomic structure
+3. Thermodynamics (Find this data)
+    a. Get Free trials for the software
+4. Formal Charge on each atom
+5. Atomic interactions between kinase and inhibitor
+6. Acidic or basic
