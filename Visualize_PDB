@@ -87,7 +87,6 @@ def create_plot():
         Axes3D.scatter(xs,ys,zs,s=2,c=create_color(atoms[i]))
         if charge.lower() != "nan":  # Adds the formal charges to the atoms (assuming the formal charge is nonzero)
             ax.text(xs, ys, zs, str(charge))
-    plt.imread()
 
 
 
