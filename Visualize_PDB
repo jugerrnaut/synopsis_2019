@@ -1,0 +1,95 @@
+from matplotlib import pyplot as plt  # For plotting.
+from biopandas.pdb import PandasPdb  # For all the actual PDB work.
+import numpy as np
+from PIL import Image
+from mpl_toolkits.mplot3d import Axes3D
+
+
+'''TODO: add in interactions between atoms, convert the plot into a numpy array for data compilation'''
+
+# PROGRAM STARTS HERE
+
+# Lists for the coordinate triples.
+xcoord = []
+ycoord = []
+zcoord = []
+charges = []
+atoms = []
+pdb = PandasPdb().fetch_pdb("2dq7")  # Fetches the PDB file
+
+
+#  Adds the coordinates of the individual atoms into the lists.
+def create_xyz():
+    global xcoord
+    global ycoord
+    global zcoord
+    test_df = pdb.df["ATOM"]  # Gets the atoms in the pdb file
+    # Appends the coordinates of the atoms into the lists.
+    for row in range(len(test_df)):
+        xcoord.append(test_df.loc[row, "x_coord"])
+        ycoord.append(test_df.loc[row, "y_coord"])
+        zcoord.append(test_df.loc[row, "z_coord"])
+
+
+create_xyz()
+
+
+def create_charges():
+    global charges
+    test_df = pdb.df["ATOM"]
+    for row in range(len(test_df)):
+        charges.append(str(test_df.loc[row, "charge"]))
+
+
+create_charges()
+
+
+# Creates a list of the atoms (for the color coding later on)
+def label_atoms():
+    test_df = pdb.df["ATOM"]
+    for row in range(len(test_df)):
+        atoms.append(test_df.loc[row, "element_symbol"])
+
+
+label_atoms()
+
+
+# Assigns the proper color to an atom.
+def create_color(atom):
+    if atom == "O":  # Red for Oxygen
+        return "red"
+    elif atom == "H":  # White for Hydrogen.
+        return "white"
+    elif atom == "Cl":  # Green for Chlorine.
+        return "green"
+    elif atom == "N":  # Blue for Nitrogen.
+        return "blue"
+    elif atom == "C":  # Grey for Carbon
+        return "grey"
+    elif atom == "S":  # Yellow for Sulfur.
+        return "yellow"
+    elif atom == "P":  # Orange for Phosphorus.
+        return "orange"
+    else:  # Dark red for everything else since the elements above are the main ones.
+        return "darkred"
+
+
+# plotting
+def create_plot():
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')  # Creates the 3d axes.
+    for i in range(len(xcoord)):  # Plots all the points
+        xs = xcoord[i]
+        ys = ycoord[i]
+        zs = zcoord[i]
+        charge = charges[i]
+        ax.scatter3D(xs, ys, zs, s=1, c=create_color(atoms[i]))  # 3d plotting, color is determined by the element.
+        Axes3D.scatter(xs,ys,zs,s=2,c=create_color(atoms[i]))
+        if charge.lower() != "nan":  # Adds the formal charges to the atoms (assuming the formal charge is nonzero)
+            ax.text(xs, ys, zs, str(charge))
+    plt.imread()
+
+
+
+create_plot()
+plt.show()
